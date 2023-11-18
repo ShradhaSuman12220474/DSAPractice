@@ -5,7 +5,7 @@ class maxheap{
 private:
     vector<int>hp;
 public:
-    void heapyfy(int ci){
+    void upHeapyfy(int ci){
         while(ci>0){
             int pi=(ci-1)/2;
             if(hp[ci]>hp[pi]){
@@ -15,15 +15,42 @@ public:
             else break;
         }
     }
+    void downHeapyfy(int idx){
+        while(idx<hp.size()){
+            int l=2*idx+1;
+            int r=2*idx+2;
+            int maxIdx=idx;
+            if(l<hp.size() && hp[l]>hp[maxIdx])
+                maxIdx=l;
+            if(r <hp.size() && hp[r]>hp[maxIdx])
+                maxIdx=r;
+            if(maxIdx!=idx){
+                swap(hp[maxIdx],hp[idx]);
+                idx=maxIdx;//for the next iteration
+
+            }else{
+                break;
+            }        
+        }
+    }
 
     void push(int element){
         hp.push_back(element);
-        heapyfy(hp.size()-1);
+        upHeapyfy(hp.size()-1);
     }
 
     bool empty(){
         return hp.size()==0;
     }
+
+    void pop(){
+        if(empty()) return;
+        swap(hp[0],hp[hp.size()-1]);
+        hp.pop_back();
+        if(!empty())
+        downHeapyfy(0);
+    }
+
 
     void display(){
         cout<<"[";
@@ -31,6 +58,7 @@ public:
             cout<<hp[i]<<" ";
         }
         cout<<"]";
+        cout<<endl;
     }
 
 
@@ -46,6 +74,8 @@ int main(){
     hp.push(30);
     hp.push(44);
     hp.push(50);
+    hp.display();
+    hp.pop();
     hp.display();
     
     
